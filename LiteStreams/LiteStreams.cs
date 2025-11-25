@@ -1,9 +1,5 @@
-﻿using HarmonyLib;
-using ResoniteModLoader;
+﻿using ResoniteModLoader;
 using FrooxEngine;
-using FrooxEngine.UIX;
-using Elements.Assets;
-using Elements.Core;
 
 namespace LiteStreams;
 
@@ -17,9 +13,42 @@ public class LiteStreams : ResoniteMod
 
     public override void OnEngineInit()
     {
-        Harmony harmony = new("net.raidriar796.LiteStreams");
         Config = GetConfiguration();
         Config?.Save(true);
-        harmony.PatchAll();
+
+        Engine.Current.WorldManager.WorldAdded += RegisterWorlds;
+        Engine.Current.WorldManager.WorldRemoved += CleanDictionary;
+    }
+
+    private static Dictionary<World, bool> firstFocusList = new();
+
+    private static void RegisterWorlds(World world)
+    {
+        firstFocusList.Add(world, new());
+        firstFocusList[world] = false;
+        Engine.Current.WorldManager.WorldFocused += OnFirstFocus;
+    }
+
+    private static void OnFirstFocus(World world)
+    {
+        if (!firstFocusList[world])
+        {
+            firstFocusList[world] = true;
+            foreach (FrooxEngine.Stream stream in world.LocalUser.Streams)
+            {
+                if (stream is ImplicitStream implicitStream)
+                {
+                    stream.World.RunSynchronously(() =>
+                    {
+                        implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
+                    });
+                }
+            }
+        }
+    }
+
+    private static void CleanDictionary(World world)
+    {
+        firstFocusList.Remove(world);
     }
 }
