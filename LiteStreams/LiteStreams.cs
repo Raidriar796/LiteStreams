@@ -16,12 +16,15 @@ public class LiteStreams : ResoniteMod
         Config = GetConfiguration();
         Config?.Save(true);
 
+        // Subscribe setup and cleanup methods
         Engine.Current.WorldManager.WorldAdded += RegisterWorlds;
         Engine.Current.WorldManager.WorldRemoved += CleanDictionary;
     }
 
+    // For tracking each world and once you've focused in for the first time
     private static Dictionary<World, bool> firstFocusList = new();
 
+    // Assigns worlds to the dictionary and subscribes logic for when you initially focus
     private static void RegisterWorlds(World world)
     {
         firstFocusList.Add(world, new());
@@ -31,15 +34,19 @@ public class LiteStreams : ResoniteMod
 
     private static void OnFirstFocus(World world)
     {
+        // Check if the world has already been focused at least once
         if (!firstFocusList[world])
         {
             firstFocusList[world] = true;
+            // Runs on every stream for the local user
             foreach (FrooxEngine.Stream stream in world.LocalUser.Streams)
             {
+                // Only change streams that are implicit so the period can be updated
                 if (stream is ImplicitStream implicitStream)
                 {
                     stream.World.RunSynchronously(() =>
                     {
+                        // Cuts the frequency of updates for value streams in half
                         implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
                     });
                 }
