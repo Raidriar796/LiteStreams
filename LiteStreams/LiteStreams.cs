@@ -51,10 +51,23 @@ public class LiteStreams : ResoniteMod
                         implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
                     }
                 }
-            });
 
+                // Update any new streams that are added after the first focus
+                world.LocalUser.StreamAdded += UpdateNewStreams;
+            });
         }
     }
+
+    private static void UpdateNewStreams(FrooxEngine.Stream stream)
+    {
+        stream.World.RunSynchronously(() =>
+        {
+            if (stream is ImplicitStream implicitStream)
+            {
+                implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
+            }
+        });
+    } 
 
     private static void CleanDictionary(World world)
     {
