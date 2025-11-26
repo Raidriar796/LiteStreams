@@ -2,7 +2,7 @@
 
 A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that reduces outbound network traffic.
 
-This is primarily beneficial for users with poor upload speed and/or users that achieve exceedingly high framerates (144+ fps).
+This is primarily beneficial for users with poor upload speed, metered internet, and/or users that achieve exceedingly high framerates (144+ fps).
 
 ## Requirements
 - [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader)
