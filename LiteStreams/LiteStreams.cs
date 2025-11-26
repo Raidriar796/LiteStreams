@@ -1,5 +1,6 @@
 ﻿using ResoniteModLoader;
 using FrooxEngine;
+using Elements.Assets;
 
 namespace LiteStreams;
 
@@ -50,6 +51,17 @@ public class LiteStreams : ResoniteMod
                         // Cuts the frequency of updates for value streams in half
                         implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
                     }
+                    // Check for the user's voice audio stream
+                    else if (stream.Name == "Voice")
+                    {
+                        // See if the stream is a mono opus stream, incase a stream is named
+                        // voice when it's not the user's voice for whatever reason
+                        if (stream is OpusStream<MonoSample> voiceStream)
+                        {
+                            // Reduces the bitrate, default value is 25000
+                            voiceStream.BitRate.Value = 16000;
+                        }
+                    }
                 }
 
                 // Update any new streams that are added after the first focus
@@ -62,9 +74,18 @@ public class LiteStreams : ResoniteMod
     {
         stream.World.RunSynchronously(() =>
         {
+            // Only change streams that are implicit so the period can be updated
             if (stream is ImplicitStream implicitStream)
             {
+                // Cuts the frequency of updates for value streams in half
                 implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
+            }
+            // Checks if the stream is a valid stereo opus stream
+            else if (stream is OpusStream<StereoSample> audioStream)
+            {
+                // Set the minimum volume to prevent packets being sent
+                // when the stream is not playing any audio
+                audioStream.MinimumVolume.Value = 0.005f;
             }
         });
     } 
