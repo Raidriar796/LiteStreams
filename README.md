@@ -12,9 +12,9 @@ The majority of outbound traffic is caused by value streams and audio streams, t
 
 Value streams handle sending information like your visemes and tracking points. Each of these value streams contains a `Period` value, which determines how many engine updates to wait between sending updates.
 
-The higher your frame rate, the more often your streams will update.
+The higher your frame rate is, the more often your streams will update.
 
-When you join a session, LiteStreams will double the period of every stream, which cuts the update frequency in half.
+When you join a session, LiteStreams will double the period of your streams, which cuts the update frequency in half.
 
 When the period is 0, it is left as is because streams with a period of 0 only update as needed instead of being updated at a constant rate.
 
@@ -30,7 +30,7 @@ Generally, the lower the quality your mic is, the lower bitrate you can get away
 
 Audio streams by default will constantly send outbound traffic, even when the input audio is completely silent.
 
-LiteStreams sets a minimum volume, which requires that a certain volume threshold must be met before sending packets.
+LiteStreams sets a minimum volume on your audio streams, which requires that a certain volume threshold must be met before sending packets.
 
 This effectively stops outbound traffic when the stream is silent.
 
