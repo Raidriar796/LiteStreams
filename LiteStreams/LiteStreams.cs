@@ -9,7 +9,7 @@ public class LiteStreams : ResoniteMod
     public override string Author => "Raidriar796";
     public override string Version => "1.0.0";
     public override string Link => "https://github.com/Raidriar796/LiteStreams";
-    public static ModConfiguration? Config;
+    private static ModConfiguration? Config;
 
     public override void OnEngineInit()
     {
@@ -22,7 +22,7 @@ public class LiteStreams : ResoniteMod
     }
 
     // For tracking each world and once you've focused in for the first time
-    private static Dictionary<World, bool> firstFocusList = new();
+    private static readonly Dictionary<World, bool> firstFocusList = [];
 
     // Assigns worlds to the dictionary and subscribes logic for when you initially focus
     private static void RegisterWorlds(World world)
