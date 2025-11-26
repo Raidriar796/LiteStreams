@@ -29,7 +29,7 @@ public class LiteStreams : ResoniteMod
     {
         firstFocusList.Add(world, new());
         firstFocusList[world] = false;
-        Engine.Current.WorldManager.WorldFocused += OnFirstFocus;
+        world.WorldManager.WorldFocused += OnFirstFocus;
     }
 
     private static void OnFirstFocus(World world)
@@ -38,19 +38,21 @@ public class LiteStreams : ResoniteMod
         if (!firstFocusList[world])
         {
             firstFocusList[world] = true;
-            // Runs on every stream for the local user
-            foreach (FrooxEngine.Stream stream in world.LocalUser.Streams)
+
+            world.RunSynchronously(() =>
             {
-                // Only change streams that are implicit so the period can be updated
-                if (stream is ImplicitStream implicitStream)
+                // Runs on every stream for the local user
+                foreach (FrooxEngine.Stream stream in world.LocalUser.Streams)
                 {
-                    stream.World.RunSynchronously(() =>
+                    // Only change streams that are implicit so the period can be updated
+                    if (stream is ImplicitStream implicitStream)
                     {
                         // Cuts the frequency of updates for value streams in half
                         implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
-                    });
+                    }
                 }
-            }
+            });
+
         }
     }
 
