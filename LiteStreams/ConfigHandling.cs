@@ -9,7 +9,7 @@ public partial class LiteStreams : ResoniteMod
     private static void UpdateValueStreams()
     {
         // iterate over every world
-        foreach (World world in Engine.Current.WorldManager.Worlds)
+        foreach (World world in firstFocusList.Keys)
         {
             // Only update worlds that you have focused in at least once
             if (firstFocusList[world] == true)
@@ -73,7 +73,7 @@ public partial class LiteStreams : ResoniteMod
     {
         if (Config!.GetValue(Enable))
         {
-            foreach (World world in Engine.Current.WorldManager.Worlds)
+            foreach (World world in firstFocusList.Keys)
             {
                 // Only update worlds that you have focused in at least once
                 if (firstFocusList[world] == true)

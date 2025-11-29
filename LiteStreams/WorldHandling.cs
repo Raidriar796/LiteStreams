@@ -9,9 +9,12 @@ public partial class LiteStreams : ResoniteMod
     // Assigns worlds to the dictionary and subscribes logic for when you initially focus
     private static void RegisterWorlds(World world)
     {
-        firstFocusList.Add(world, new());
-        firstFocusList[world] = false;
-        world.WorldManager.WorldFocused += OnFirstFocus;
+        if (Engine.Current.WorldManager.WorldCount > 2)
+        {
+            firstFocusList.Add(world, new());
+            firstFocusList[world] = false;
+            world.WorldManager.WorldFocused += OnFirstFocus;
+        }
     }
 
     private static void OnFirstFocus(World world)
