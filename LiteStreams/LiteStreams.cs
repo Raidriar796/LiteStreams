@@ -20,8 +20,9 @@ public partial class LiteStreams : ResoniteMod
         // Subscribe setup and cleanup methods
         Engine.Current.WorldManager.WorldAdded += RegisterWorlds;
         Engine.Current.WorldManager.WorldRemoved += CleanDictionary;
-    
-        // Change the voice stream in the current world when the config changes
+
+        // Update streams when config values change
+        Enable.OnChanged += (value) => UpdateValueStreams();
         voiceQuality.OnChanged += (value) => UpdateVoiceStream();
     }
 
@@ -59,7 +60,7 @@ public partial class LiteStreams : ResoniteMod
                     // Runs on every stream for the local user
                     foreach (FrooxEngine.Stream stream in world.LocalUser.Streams)
                     {
-                        // Only change streams that are implicit so the period can be updated
+                        // Only change the period of streams if they are implicit streams
                         if (stream is ImplicitStream implicitStream)
                         {
                             // Cuts the frequency of updates for value streams in half
@@ -91,7 +92,7 @@ public partial class LiteStreams : ResoniteMod
         {
             stream.World.RunSynchronously(() =>
             {
-                // Only change streams that are implicit so the period can be updated
+                // Only change the period of streams if they are implicit streams
                 if (stream is ImplicitStream implicitStream)
                 {
                     // Cuts the frequency of updates for value streams in half
@@ -103,33 +104,6 @@ public partial class LiteStreams : ResoniteMod
                     // Set the minimum volume to prevent packets being sent
                     // when the stream is not playing any audio
                     audioStream.MinimumVolume.Value = 0.005f;
-                }
-            });
-        }
-    } 
-
-    private static void UpdateVoiceStream()
-    {
-        if (Config!.GetValue(Enable))
-        {
-            Engine.Current.WorldManager.FocusedWorld.RunSynchronously(() =>
-            {
-                // Runs on every stream for the local user
-                foreach (FrooxEngine.Stream stream in Engine.Current.WorldManager.FocusedWorld.LocalUser.Streams)
-                {
-                    // Check for the user's voice audio stream
-                    if (stream.Name == "Voice")
-                    {
-                        // See if the stream is a mono opus stream, incase a stream is named
-                        // voice when it's not the user's voice for whatever reason
-                        if (stream is OpusStream<MonoSample> voiceStream)
-                        {
-                            // Reduces the bitrate, default value is 25000
-                            voiceStream.BitRate.Value = (int)Config!.GetValue(voiceQuality);
-                            // Break the loop early, as there is no need to search anymore
-                            break;
-                        }
-                    }
                 }
             });
         }
