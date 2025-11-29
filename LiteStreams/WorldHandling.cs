@@ -53,8 +53,18 @@ public partial class LiteStreams : ResoniteMod
 
                 // Update any new streams that are added after the first focus
                 world.LocalUser.StreamAdded += UpdateNewStreams;
+    
+                if (world.IsAuthority && Config!.GetValue(hostManagement))
+                {
+                    world.UserJoined += HandleNewUsers;
+                }
             });
         }
+    }
+    
+    private static void HandleNewUsers(User user)
+    {
+        user.StreamAdded += UpdateNewStreams;
     }
 
     private static void UpdateNewStreams(FrooxEngine.Stream stream)
@@ -68,6 +78,14 @@ public partial class LiteStreams : ResoniteMod
                 {
                     // Cuts the frequency of updates for value streams in half
                     implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
+                }
+                // Checks if the stream is named "Voice" and is a valid mono opus stream
+                else if (stream.Name == "Voice")
+                {
+                    if (stream is OpusStream<MonoSample> voiceStream)
+                    {
+                        voiceStream.BitRate.Value = (int)Config!.GetValue(voiceQuality);
+                    }
                 }
                 // Checks if the stream is a valid stereo opus stream
                 else if (stream is OpusStream<StereoSample> audioStream)
