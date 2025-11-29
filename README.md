@@ -40,6 +40,14 @@ LiteStreams reduces your outbound traffic by about a third, not including audio 
 
 LiteStreams has a greater effect for hosts as the host has to send your traffic to everyone else in the session.
 
+### Experimental Host Management
+
+There is an experimental option which allows the host to apply all the above changes to other users, even if they don't have the mod. This results in exponentially greater bandwidth savings.
+
+A dynamic variable is created when hosting to broadcast to other users running the mod not to update their own streams anymore.
+
+Due to limitations with how streams work, streams are only modified when they are created.
+
 ## Requirements
 - [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader)
 
