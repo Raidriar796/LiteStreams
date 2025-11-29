@@ -7,7 +7,7 @@ public partial class LiteStreams : ResoniteMod
 {
     public override string Name => "LiteStreams";
     public override string Author => "Raidriar796";
-    public override string Version => "1.1.0";
+    public override string Version => "1.2.0";
     public override string Link => "https://github.com/Raidriar796/LiteStreams";
     private static ModConfiguration? Config;
 
