@@ -19,6 +19,14 @@ public partial class LiteStreams : ResoniteMod
 
     private static void OnFirstFocus(World world)
     {
+        foreach (DynamicValueVariable<bool> DynVar in world.RootSlot.GetComponents<DynamicValueVariable<bool>>())
+        {
+            if (DynVar.VariableName.Value == "World/LiteStreams.HostManaged")
+            {
+                firstFocusList.Remove(world);
+                return;
+            }
+        }
         // Check if the world has already been focused at least once
         if (!firstFocusList[world])
         {
@@ -49,15 +57,19 @@ public partial class LiteStreams : ResoniteMod
                             }
                         }
                     }
+
+                    if (world.IsAuthority && Config!.GetValue(hostManagement))
+                    {
+                        var broadcastDynVar = world.RootSlot.AttachComponent<DynamicValueVariable<bool>>();
+                        broadcastDynVar.Persistent = false;
+                        broadcastDynVar.VariableName.Value = "World/LiteStreams.HostManaged";
+                        broadcastDynVar.Value.Value = true;
+                        world.UserJoined += HandleNewUsers;
+                    }
                 }
 
                 // Update any new streams that are added after the first focus
                 world.LocalUser.StreamAdded += UpdateNewStreams;
-    
-                if (world.IsAuthority && Config!.GetValue(hostManagement))
-                {
-                    world.UserJoined += HandleNewUsers;
-                }
             });
         }
     }
