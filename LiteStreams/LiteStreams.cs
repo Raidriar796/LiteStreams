@@ -21,7 +21,7 @@ public partial class LiteStreams : ResoniteMod
         Engine.Current.WorldManager.WorldRemoved += CleanDictionary;
 
         // Update streams when config values change
-        Enable.OnChanged += (value) => UpdateValueStreams();
+        enable.OnChanged += (value) => UpdateValueStreams();
         voiceQuality.OnChanged += (value) => UpdateVoiceStream();
     }
 

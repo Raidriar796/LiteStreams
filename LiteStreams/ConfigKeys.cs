@@ -5,8 +5,8 @@ namespace LiteStreams;
 public partial class LiteStreams : ResoniteMod
 {
     [AutoRegisterConfigKey]
-    public static readonly ModConfigurationKey<bool> Enable =
-        new("Enable", "Enable LiteStreams", () => true);
+    public static readonly ModConfigurationKey<bool> enable =
+        new("enable", "Enable LiteStreams", () => true);
     
     [AutoRegisterConfigKey]
     public static readonly ModConfigurationKey<VoiceQuality> voiceQuality =

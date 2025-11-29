@@ -26,7 +26,7 @@ public partial class LiteStreams : ResoniteMod
 
             world.RunSynchronously(() =>
             {
-                if (Config!.GetValue(Enable))
+                if (Config!.GetValue(enable))
                 {
                     // Runs on every stream for the local user
                     foreach (FrooxEngine.Stream stream in world.LocalUser.Streams)
@@ -59,7 +59,7 @@ public partial class LiteStreams : ResoniteMod
 
     private static void UpdateNewStreams(FrooxEngine.Stream stream)
     {
-        if (Config!.GetValue(Enable))
+        if (Config!.GetValue(enable))
         {
             stream.World.RunSynchronously(() =>
             {

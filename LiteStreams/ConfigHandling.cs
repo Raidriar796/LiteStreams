@@ -23,7 +23,7 @@ public partial class LiteStreams : ResoniteMod
                         if (stream is ImplicitStream implicitStream)
                         {
                             // Depending on if the mod was enabled or disabled, double or half the stream period
-                            if (Config!.GetValue(Enable))
+                            if (Config!.GetValue(enable))
                             {
                                 implicitStream.SetUpdatePeriod(implicitStream.Period * 2, implicitStream.Phase);
                             }
@@ -40,7 +40,7 @@ public partial class LiteStreams : ResoniteMod
                             if (stream.Name == "Voice")
                             {
                                 // Depending on if the mod was enabled or disabled, set the voice bitrate to the original or the configured bitrate
-                                if (Config!.GetValue(Enable))
+                                if (Config!.GetValue(enable))
                                 {
                                     voiceStream.BitRate.Value = (int)Config!.GetValue(voiceQuality);
                                 }
@@ -54,7 +54,7 @@ public partial class LiteStreams : ResoniteMod
                         else if (stream is OpusStream<StereoSample> audioStream)
                         {
                             // Depending on if the mod was enabled or disabled, set or unset a minimum volume
-                            if (Config!.GetValue(Enable))
+                            if (Config!.GetValue(enable))
                             {
                                 audioStream.MinimumVolume.Value = 0.005f;
                             }
@@ -71,7 +71,7 @@ public partial class LiteStreams : ResoniteMod
 
     private static void UpdateVoiceStream()
     {
-        if (Config!.GetValue(Enable))
+        if (Config!.GetValue(enable))
         {
             foreach (World world in firstFocusList.Keys)
             {
