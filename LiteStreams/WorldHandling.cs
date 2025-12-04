@@ -9,7 +9,7 @@ public partial class LiteStreams : ResoniteMod
     // Assigns worlds to the dictionary and subscribes logic for when you initially focus
     private static void RegisterWorlds(World world)
     {
-        if (Engine.Current.WorldManager.WorldCount > 2)
+        if (!world.IsUserspace())
         {
             firstFocusList.Add(world, new());
             firstFocusList[world] = false;
